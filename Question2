@@ -1,63 +1,45 @@
-class ListNode {
-    int val;
-    ListNode next;
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
-}
+class LinkedListCycle:
+    def detectCycle(self, head):
+        if head is None or head.next is None:
+            return None
 
- class LinkedListCycle {
-    public ListNode detectCycle(ListNode head) {
-        if (head == null || head.next == null) {
-            return null;
-        }
+        slow = head
+        fast = head
 
-        ListNode slow = head;
-        ListNode fast = head;
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
 
+            if slow == fast:
+                break
 
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        if fast is None or fast.next is None:
+            return None
 
+        slow = head
 
-            if (slow == fast) {
-                break;
-            }
-        }
+        while slow != fast:
+            slow = slow.next
+            fast = fast.next
 
+        return slow
 
-        if (fast == null || fast.next == null) {
-            return null;
-        }
+solution = LinkedListCycle()
 
-        slow = head;
+head = ListNode(3)
+head.next = ListNode(2)
+head.next.next = ListNode(0)
+head.next.next.next = ListNode(-4)
+head.next.next.next.next = head.next  # Create a cycle
 
-        while (slow != fast) {
-            slow = slow.next;
-            fast = fast.next;
-        }
+cycleStart = solution.detectCycle(head)
+if cycleStart is not None:
+    print("Cycle starts at node with value: " + str(cycleStart.val))
+else:
+    print("No cycle detected.")
 
-        return slow;
-    }
-
-    public static void main(String[] args) {
-        LinkedListCycle solution = new LinkedListCycle();
-
-
-        ListNode head = new ListNode(3);
-        head.next = new ListNode(2);
-        head.next.next = new ListNode(0);
-        head.next.next.next = new ListNode(-4);
-        head.next.next.next.next = head.next; // Cycle
-
-        ListNode cycleStart = solution.detectCycle(head);
-        if (cycleStart != null) {
-            System.out.println("Cycle starts at node with value: " + cycleStart.val);
-        } else {
-            System.out.println("No cycle detected.");
-        }
-    }
-}
